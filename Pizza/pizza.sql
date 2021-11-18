@@ -57,23 +57,14 @@ CREATE TABLE `productes` (
     PRIMARY KEY (`idproductes`, `tipusproducte`)
 );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+CREATE TABLE `bebidas` (
+    `idbebidas` int NOT NULL AUTO_INCREMENT,
+    `nombrebebida` VARCHAR(45) NOT NULL,
+    `descripcionbebida` VARCHAR(45) NOT NULL,
+    `imagenbebida` int NOT NULL,
+    `preciobebida` DECIMAL (5,2),
+    PRIMARY KEY (`idbebidas`)
+);
 
 
 
