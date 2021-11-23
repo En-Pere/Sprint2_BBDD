@@ -148,7 +148,31 @@ VALUES ('2020-09-01 00:00:00', 'domicilio');
 INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`)
 VALUES ('2020-06-01 00:00:00', 'tienda');
 
+-- INSERTAR DATOS TIENDAS --
 
+INSERT INTO `pizza`.`tiendas` (`direcciontienda`)
+VALUES ('C/ sepulveda 52');
+INSERT INTO `pizza`.`tiendas` (`direcciontienda`)
+VALUES ('C/ marina 352');
+INSERT INTO `pizza`.`tiendas` (`direcciontienda`)
+VALUES ('C/ llacuna 62');
+
+-- INSERTAR EMPLEADOS --
+
+INSERT INTO `pizza`.`empleados` (`nom`, `cognom`, `nif`, `telefono`, `puestotrabajo`)
+VALUES ('Olga', 'Prado', '4588486P', '681713271', 'repartidor');
+
+INSERT INTO `pizza`.`empleados` (`nom`, `cognom`, `nif`, `telefono`, `puestotrabajo`)
+VALUES ('Marco', 'Polo', '4564486P', '813713271', 'repartidor');
+
+INSERT INTO `pizza`.`empleados` (`nom`, `cognom`, `nif`, `telefono`, `puestotrabajo`)
+VALUES ('Johan', 'Will', '8888486P', '111713271', 'cuiner');
+
+INSERT INTO `pizza`.`empleados` (`nom`, `cognom`, `nif`, `telefono`, `puestotrabajo`)
+VALUES ('Pere', 'Roy', '1188486P', '33313271', 'cuiner');
+
+INSERT INTO `pizza`.`empleados` (`nom`, `cognom`, `nif`, `telefono`, `puestotrabajo`)
+VALUES ('Maria', 'Salta', '87438486P', '48613271', 'cuiner');
 
 
 
