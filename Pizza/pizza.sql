@@ -30,12 +30,22 @@ CREATE TABLE `localidad` (
     FOREIGN KEY (`idprovincia`) REFERENCES `provincia`(`idprovincia`)
 );
 
+
+
 CREATE TABLE `pedidos` (
     `idpedidos` int NOT NULL AUTO_INCREMENT,
     `fechahora` DATETIME,
     `entrega` ENUM ('tienda', 'domicilio') NOT NULL,
-    PRIMARY KEY (`idpedidos`)
+    `idproductes` int NOT NULL,
+    `idbebidas` int NOT NULL,
+    `idlocalidad` int NOT NULL,
+    PRIMARY KEY (`idpedidos`),
+    FOREIGN KEY (`idproductes`) REFERENCES `productes`(`idproductes`),
+    FOREIGN KEY (`idbebidas`) REFERENCES `bebidas`(`idbebidas`),
+    FOREIGN KEY (`idlocalidad`) REFERENCES `localidad`(`idlocalidad`)
 );
+
+
 
 CREATE TABLE `tiendas` (
     `idtiendas` int NOT NULL AUTO_INCREMENT,
@@ -139,14 +149,15 @@ VALUES (4, 'Cabanes', 17761);
 
 -- INSERTAR DATOS PEDIDOS --
 
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`)
-VALUES ('2020-07-01 00:00:00', 'tienda');
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`)
-VALUES ('2020-10-10 00:00:00', 'domicilio');
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`)
-VALUES ('2020-09-01 00:00:00', 'domicilio');
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`)
-VALUES ('2020-06-01 00:00:00', 'tienda');
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idbebidas`, `idlocalidad`)
+VALUES ('2020-07-01 00:00:00', 'tienda', 1, 1, 1);
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idbebidas`, `idlocalidad`)
+VALUES ('2020-10-10 00:00:00', 'domicilio', 1, 2, 1);
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idbebidas`, `idlocalidad`)
+VALUES ('2020-09-01 00:00:00', 'domicilio', 2, 1, 3);
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idbebidas`, `idlocalidad`)
+VALUES ('2020-06-01 00:00:00', 'tienda', 2, 2, 3);
+
 
 -- INSERTAR DATOS TIENDAS --
 
@@ -174,28 +185,43 @@ VALUES ('Pere', 'Roy', '1188486P', '33313271', 'cuiner');
 INSERT INTO `pizza`.`empleados` (`nom`, `cognom`, `nif`, `telefono`, `puestotrabajo`)
 VALUES ('Maria', 'Salta', '87438486P', '48613271', 'cuiner');
 
+-- INSERTAR PRODUCTES --
 
+INSERT INTO `pizza`.`productes` (`tipusproducte`)
+VALUES ('pizza');
+INSERT INTO `pizza`.`productes` (`tipusproducte`)
+VALUES ('hamburguesa');
+INSERT INTO `pizza`.`productes` (`tipusproducte`)
+VALUES ('bebida');
 
+-- INSERTAR BEBIDAS --
 
+INSERT INTO `pizza`.`bebidas` (`nombrebebida`, `descripcionbebida`, `imagenbebida`, `preciobebida`)
+VALUES ('fanta', 'naranja', 1,'2.50');
+INSERT INTO `pizza`.`bebidas` (`nombrebebida`, `descripcionbebida`, `imagenbebida`, `preciobebida`)
+VALUES ('coca-cola', 'normal', 2,'2.40');
+INSERT INTO `pizza`.`bebidas` (`nombrebebida`, `descripcionbebida`, `imagenbebida`, `preciobebida`)
+VALUES ('agua', 'sin gas', 3,'1.50');
 
+-- INSERTAR PIZZAS --
 
+INSERT INTO `pizza`.`pizzas` (`nombrepizza`, `descripcionpizza`, `imagenpizza`, `preciopizza`)
+VALUES ('barbacoa', 'bacon, queso, maíz', 1,'9.90');
+INSERT INTO `pizza`.`pizzas` (`nombrepizza`, `descripcionpizza`, `imagenpizza`, `preciopizza`)
+VALUES ('4-quesos', 'parmesano, chedar, mozzarela, gouda', 2,'13.90');
+INSERT INTO `pizza`.`pizzas` (`nombrepizza`, `descripcionpizza`, `imagenpizza`, `preciopizza`)
+VALUES ('jalisco', 'pimiento, queso, aceitunas', 3,'10.90');
+INSERT INTO `pizza`.`pizzas` (`nombrepizza`, `descripcionpizza`, `imagenpizza`, `preciopizza`)
+VALUES ('tropical', 'piña, queso, jamón', 4,'10.80');
 
+-- INSERTAR HAMBURGUESAS -- 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+INSERT INTO `pizza`.`hamburguesas` (`nombrehamburguesa`, `descripcionhamburguesa`, `imagenhamburguesa`, `preciohamburguesa`)
+VALUES ('777', 'bacon, queso, maíz', 1,'9.90');
+INSERT INTO `pizza`.`hamburguesas` (`nombrehamburguesa`, `descripcionhamburguesa`, `imagenhamburguesa`, `preciohamburguesa`)
+VALUES ('burguerqueso', 'ternera, queso', 2,'10.90');
+INSERT INTO `pizza`.`hamburguesas` (`nombrehamburguesa`, `descripcionhamburguesa`, `imagenhamburguesa`, `preciohamburguesa`)
+VALUES ('vegan', 'vegana, maíz', 1,'7.90');
 
 
 
