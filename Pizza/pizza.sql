@@ -30,19 +30,17 @@ CREATE TABLE `localidad` (
     FOREIGN KEY (`idprovincia`) REFERENCES `provincia`(`idprovincia`)
 );
 
-
-
 CREATE TABLE `pedidos` (
     `idpedidos` int NOT NULL AUTO_INCREMENT,
     `fechahora` DATETIME,
     `entrega` ENUM ('tienda', 'domicilio') NOT NULL,
     `idproductes` int NOT NULL,
-    `idbebidas` int NOT NULL,
     `idlocalidad` int NOT NULL,
+    `idempleados` int NOT NULL,
     PRIMARY KEY (`idpedidos`),
     FOREIGN KEY (`idproductes`) REFERENCES `productes`(`idproductes`),
-    FOREIGN KEY (`idbebidas`) REFERENCES `bebidas`(`idbebidas`),
-    FOREIGN KEY (`idlocalidad`) REFERENCES `localidad`(`idlocalidad`)
+    FOREIGN KEY (`idlocalidad`) REFERENCES `localidad`(`idlocalidad`),
+    FOREIGN KEY (`idempleados`) REFERENCES `empleados`(`idempleados`)
 );
 
 
@@ -149,14 +147,14 @@ VALUES (4, 'Cabanes', 17761);
 
 -- INSERTAR DATOS PEDIDOS --
 
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idbebidas`, `idlocalidad`)
-VALUES ('2020-07-01 00:00:00', 'tienda', 1, 1, 1);
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idbebidas`, `idlocalidad`)
-VALUES ('2020-10-10 00:00:00', 'domicilio', 1, 2, 1);
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idbebidas`, `idlocalidad`)
-VALUES ('2020-09-01 00:00:00', 'domicilio', 2, 1, 3);
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idbebidas`, `idlocalidad`)
-VALUES ('2020-06-01 00:00:00', 'tienda', 2, 2, 3);
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idlocalidad`,`idempleados`)
+VALUES ('2020-07-01 00:00:00', 'tienda', 1, 3, 1);
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idlocalidad`,`idempleados`)
+VALUES ('2020-10-10 00:00:00', 'domicilio', 3, 3, 1);
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idlocalidad`,`idempleados`)
+VALUES ('2020-09-01 00:00:00', 'domicilio', 3, 2, 3);
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idlocalidad`,`idempleados`)
+VALUES ('2020-06-01 00:00:00', 'tienda', 2, 1, 3);
 
 
 -- INSERTAR DATOS TIENDAS --
@@ -222,6 +220,21 @@ INSERT INTO `pizza`.`hamburguesas` (`nombrehamburguesa`, `descripcionhamburguesa
 VALUES ('burguerqueso', 'ternera, queso', 2,'10.90');
 INSERT INTO `pizza`.`hamburguesas` (`nombrehamburguesa`, `descripcionhamburguesa`, `imagenhamburguesa`, `preciohamburguesa`)
 VALUES ('vegan', 'vegana, maíz', 1,'7.90');
+
+-- QUERIES --
+
+-- Llista quants productes de la categoria 'begudes' s'han venut en una determinada localitat --
+SELECT * 
+FROM pedidos
+WHERE `idproductes` = '3' AND `idlocalidad` = '3'
+
+-- Llista quantes comandes ha efectuat un determinat empleat --
+
+SELECT * 
+FROM pedidos
+WHERE `idempleados` = '1'
+
+
 
 
 
