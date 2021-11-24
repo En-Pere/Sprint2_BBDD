@@ -10,6 +10,8 @@ SELECT * FROM producto
 -- Llista el nom dels productos, el preu en euros i el preu en dòlars estatunidencs (USD).
 SELECT nombre, precio, precio*1.12  FROM producto
 
+
+
 -- Llista el nom dels productos, el preu en euros i el preu en dòlars estatunidencs (USD). Utilitza els següents àlies per a les columnes: nom de producto, euros, dolars.
 
 
