@@ -10,19 +10,20 @@ SELECT * FROM producto
 -- Llista el nom dels productos, el preu en euros i el preu en dòlars estatunidencs (USD).
 SELECT nombre, precio, precio*1.12  FROM producto
 
-
-
 -- Llista el nom dels productos, el preu en euros i el preu en dòlars estatunidencs (USD). Utilitza els següents àlies per a les columnes: nom de producto, euros, dolars.
-
+SELECT nombre AS `nom de producto`, precio AS `euros`, precio*1.12 AS `dolars` FROM producto 
 
 -- Llista els noms i els preus de tots els productos de la taula producto, convertint els noms a majúscula.
-
+SELECT UCASE (nombre) AS MAYUSCULA, precio FROM producto
 
 -- Llista els noms i els preus de tots els productos de la taula producto, convertint els noms a minúscula.
+SELECT LCASE (nombre) AS MINUSCULA, precio FROM producto
 
 -- Llista el nom de tots els fabricants en una columna, i en una altra columna obtingui en majúscules els dos primers caràcters del nom del fabricant.
+SELECT nombre, UCASE (left (nombre,2)) AS MAYUSCULA FROM fabricante
 
 -- Llista els noms i els preus de tots els productos de la taula producto, arrodonint el valor del preu.
+
 
 -- Llista els noms i els preus de tots els productos de la taula producto, truncant el valor del preu per a mostrar-lo sense cap xifra decimal.
 
@@ -33,6 +34,14 @@ SELECT nombre, precio, precio*1.12  FROM producto
 -- Llista els noms dels productos ordenats en primer lloc pel nom de manera ascendent i en segon lloc pel preu de manera descendent.
 -- Retorna una llista amb les 5 primeres files de la taula fabricante.
 -- Retorna una llista amb 2 files a partir de la quarta fila de la taula fabricante. La quarta fila també s'ha d'incloure en la resposta.
+
+
+
+
+
+
+
+
 -- Llista el nom i el preu del producto més barat. (Utilitzi solament les clàusules ORDER BY i LIMIT). NOTA: Aquí no podria usar MIN(preu), necessitaria GROUP BY
 -- Llista el nom i el preu del producto més car. (Utilitzi solament les clàusules ORDER BY i LIMIT). NOTA: Aquí no podria usar MAX(preu), necessitaria GROUP BY.
 -- Llista el nom de tots els productos del fabricant el codi de fabricant del qual és igual a 2.
