@@ -10,7 +10,11 @@ SELECT apellido1, apellido2, nombre, telefono FROM persona WHERE telefono IS NUL
 SELECT apellido1, apellido2, fecha_nacimiento FROM persona
 
 -- Retorna el llistat de professors que no han donat d'alta el seu número de telèfon en la base de dades i a més la seva nif acaba en K.
+SELECT nombre, tipo, telefono, nif FROM persona WHERE nif LIKE '%K' AND tipo = 'profesor' AND telefono IS NULL
+
 -- Retorna el llistat de les assignatures que s'imparteixen en el primer quadrimestre, en el tercer curs del grau que té l'identificador 7.
+SELECT * FROM 
+
 -- Retorna un llistat dels professors juntament amb el nom del departament al qual estan vinculats. El llistat ha de retornar quatre columnes, primer cognom, segon cognom, nom i nom del departament. El resultat estarà ordenat alfabèticament de menor a major pels cognoms i el nom.
 -- Retorna un llistat amb el nom de les assignatures, any d'inici i any de fi del curs escolar de l'alumne amb nif 26902806M.
 -- Retorna un llistat amb el nom de tots els departaments que tenen professors que imparteixen alguna assignatura en el Grau en Enginyeria Informàtica (Pla 2015).
