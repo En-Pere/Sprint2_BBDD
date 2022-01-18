@@ -212,3 +212,4 @@ VALUES ('2020-09-01 00:00:00', 'domicilio', 3, 3, 3, 3);
 INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idempleados`,`idclient`,`idtiendas`)
 VALUES ('2020-06-01 00:00:00', 'tienda', 2, 3, 1, 2);
 
+
