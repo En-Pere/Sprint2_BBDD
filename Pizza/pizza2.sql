@@ -1,4 +1,3 @@
-
 DROP DATABASE IF EXISTS pizza;
 
 CREATE DATABASE pizza;
@@ -6,6 +5,54 @@ CREATE DATABASE pizza;
 USE pizza;
 
 -- CREAR TABLAS --
+
+CREATE TABLE `clients` (
+    `idclient` int NOT NULL AUTO_INCREMENT,
+    `nom` VARCHAR(45) NOT NULL,
+    `cognom` VARCHAR(45) NOT NULL,
+    `direccioncliente` VARCHAR(45) NOT NULL,
+    `telefono` int NOT NULL,
+    PRIMARY KEY (`idclient`)
+);
+
+CREATE TABLE `bebidas` (
+    `idbebidas` int NOT NULL AUTO_INCREMENT,
+    `nombrebebida` VARCHAR(45) NOT NULL,
+    `descripcionbebida` VARCHAR(45) NOT NULL,
+    `imagenbebida` int NOT NULL,
+    `preciobebida` DECIMAL (5,2),
+    PRIMARY KEY (`idbebidas`)
+);
+
+CREATE TABLE `pizzas` (
+    `idpizzas` int NOT NULL AUTO_INCREMENT,
+    `nombrepizza` VARCHAR(45) NOT NULL,
+    `descripcionpizza` VARCHAR(45) NOT NULL,
+    `imagenpizza` int NOT NULL,
+    `preciopizza` DECIMAL (5,2),
+    PRIMARY KEY (`idpizzas`)
+);  
+
+CREATE TABLE `hamburguesas` (
+    `idhamburguesas` int NOT NULL AUTO_INCREMENT,
+    `nombrehamburguesa` VARCHAR(45) NOT NULL,
+    `descripcionhamburguesa` VARCHAR(45) NOT NULL,
+    `imagenhamburguesa` int NOT NULL,
+    `preciohamburguesa` DECIMAL (5,2),
+    PRIMARY KEY (`idhamburguesas`)
+);  
+
+CREATE TABLE `productes` (
+    `idproductes` int NOT NULL AUTO_INCREMENT,
+    `tipusproducte` ENUM ('pizza', 'hamburguesa', 'bebida') NOT NULL,
+    `idbebidas` int,
+    `idhamburguesas` int,
+    `idpizzas` int,
+    PRIMARY KEY (`idproductes`, `tipusproducte`),
+    FOREIGN KEY (`idbebidas`) REFERENCES `bebidas`(`idbebidas`),
+    FOREIGN KEY (`idhamburguesas`) REFERENCES `hamburguesas`(`idhamburguesas`),
+    FOREIGN KEY (`idpizzas`) REFERENCES `pizzas`(`idpizzas`)
+);
 
 CREATE TABLE `provincia` (
     `idprovincia` int NOT NULL AUTO_INCREMENT,
@@ -22,48 +69,10 @@ CREATE TABLE `localidad` (
     FOREIGN KEY (`idprovincia`) REFERENCES `provincia`(`idprovincia`)
 );
 
-CREATE TABLE `clients` (
-    `idclient` int NOT NULL AUTO_INCREMENT,
-    `idlocalidad` int NOT NULL,
-    `nom` VARCHAR(45) NOT NULL,
-    `cognom` VARCHAR(45) NOT NULL,
-    `direccioncliente` VARCHAR(45) NOT NULL,
-    `telefono` int NOT NULL,
-    PRIMARY KEY (`idclient`),
-    FOREIGN KEY (`idlocalidad`) REFERENCES `localidad`(`idlocalidad`)
-);
-
 CREATE TABLE `tiendas` (
     `idtiendas` int NOT NULL AUTO_INCREMENT,
-    `idlocalidad` int NOT NULL,
     `direcciontienda` VARCHAR(45) NOT NULL,
-    PRIMARY KEY (`idtiendas`),
-    FOREIGN KEY (`idlocalidad`) REFERENCES `localidad`(`idlocalidad`)
-);
-
--- 1- tengo que crear los tipos de pizza --
--- 2- meterlos en la tabla productes. --
--- 3- insertar datos tipos de pizza --
--- 4- insertar datos productes. --
-
-
-CREATE TABLE `tiposdepizza` (
-    `idtiposdepizza` int NOT NULL AUTO_INCREMENT,
-    `nombretipopizza` VARCHAR(45) NOT NULL,
-    `sizepizza` VARCHAR(45) NOT NULL,
-    PRIMARY KEY (`idtiposdepizza`)
-);
-
-CREATE TABLE `productes` (
-    `idproductes` int NOT NULL AUTO_INCREMENT,
-    `tipusproducte` ENUM ('pizza', 'hamburguesa', 'bebida') NOT NULL,
-    `idtiposdepizza` int NOT NULL,
-    `nomproducte` VARCHAR(45) NOT NULL,
-	`descripcionproducte` VARCHAR(45) NOT NULL,
-    `imagenproducte` int NOT NULL,
-    `precioproducte` DECIMAL (5,2),
-    PRIMARY KEY (`idproductes`),
-    FOREIGN KEY (`idtiposdepizza`) REFERENCES `tiposdepizza`(`idtiposdepizza`)
+    PRIMARY KEY (`idtiendas`)
 );
 
 CREATE TABLE `empleados` (
@@ -81,44 +90,83 @@ CREATE TABLE `pedidos` (
     `fechahora` DATETIME,
     `entrega` ENUM ('tienda', 'domicilio') NOT NULL,
     `idproductes` int NOT NULL,
+    `idlocalidad` int NOT NULL,
     `idempleados` int NOT NULL,
     `idclient` int NOT NULL,
     `idtiendas` int NOT NULL,
     PRIMARY KEY (`idpedidos`),
     FOREIGN KEY (`idproductes`) REFERENCES `productes`(`idproductes`),
+    FOREIGN KEY (`idlocalidad`) REFERENCES `localidad`(`idlocalidad`),
     FOREIGN KEY (`idclient`) REFERENCES `clients`(`idclient`),
     FOREIGN KEY (`idtiendas`) REFERENCES `tiendas`(`idtiendas`),    
     FOREIGN KEY (`idempleados`) REFERENCES `empleados`(`idempleados`)
 );
 
--- INSERTAR TIPOS DE PIZZA --
+CREATE TABLE `resumcomandes` (
+    `idpedidos` int NOT NULL,
+    `idproductes` int NOT NULL,
+     PRIMARY KEY (`idpedidos`, `idproductes`),
+     FOREIGN KEY (`idpedidos`) REFERENCES `pedidos`(`idpedidos`),
+     FOREIGN KEY (`idproductes`) REFERENCES `productes`(`idproductes`)
+);
 
-INSERT INTO `pizza`.`tiposdepizza` (`nombretipopizza`, `sizepizza`)
-VALUES ('veganpizza', 'Grande');
-INSERT INTO `pizza`.`tiposdepizza` (`nombretipopizza`, `sizepizza`)
-VALUES ('vegetarianpizza', 'medium');
-INSERT INTO `pizza`.`tiposdepizza` (`nombretipopizza`, `sizepizza`)
-VALUES ('soloCarne', 'small');
-INSERT INTO `pizza`.`tiposdepizza` (`nombretipopizza`, `sizepizza`)
-VALUES ('especialDelaCasa', 'Grande');
-INSERT INTO `pizza`.`tiposdepizza` (`nombretipopizza`, `sizepizza`)
-VALUES ('NOTPIZZA', 'OtherProduct');
+
+-- INSERTAR CLIENTES --
+
+INSERT INTO `pizza`.`clients` (`nom`, `cognom`, `direccioncliente`, `telefono`)
+VALUES ('antonio', 'Perez', 'C/ buenavista 42', 687554433);
+
+INSERT INTO `pizza`.`clients` (`nom`, `cognom`, `direccioncliente`, `telefono`)
+VALUES ('maria', 'gimenez', 'C/ alcantara 42', 664554433);
+
+INSERT INTO `pizza`.`clients` (`nom`, `cognom`, `direccioncliente`, `telefono`)
+VALUES ('Martina', 'Ruiz', 'Av. del carmen 42', 54654433);
+
+-- INSERTAR BEBIDAS --
+
+INSERT INTO `pizza`.`bebidas` (`nombrebebida`, `descripcionbebida`, `imagenbebida`, `preciobebida`)
+VALUES ('fanta', 'naranja', 1,'2.50');
+INSERT INTO `pizza`.`bebidas` (`nombrebebida`, `descripcionbebida`, `imagenbebida`, `preciobebida`)
+VALUES ('coca-cola', 'normal', 2,'2.40');
+INSERT INTO `pizza`.`bebidas` (`nombrebebida`, `descripcionbebida`, `imagenbebida`, `preciobebida`)
+VALUES ('agua', 'sin gas', 3,'1.50');
+
+-- INSERTAR PIZZAS --
+
+INSERT INTO `pizza`.`pizzas` (`nombrepizza`, `descripcionpizza`, `imagenpizza`, `preciopizza`)
+VALUES ('barbacoa', 'bacon, queso, maíz', 1,'9.90');
+INSERT INTO `pizza`.`pizzas` (`nombrepizza`, `descripcionpizza`, `imagenpizza`, `preciopizza`)
+VALUES ('4-quesos', 'parmesano, chedar, mozzarela, gouda', 2,'13.90');
+INSERT INTO `pizza`.`pizzas` (`nombrepizza`, `descripcionpizza`, `imagenpizza`, `preciopizza`)
+VALUES ('jalisco', 'pimiento, queso, aceitunas', 3,'10.90');
+INSERT INTO `pizza`.`pizzas` (`nombrepizza`, `descripcionpizza`, `imagenpizza`, `preciopizza`)
+VALUES ('tropical', 'piña, queso, jamón', 4,'10.80');
+
+-- INSERTAR HAMBURGUESAS -- 
+
+INSERT INTO `pizza`.`hamburguesas` (`nombrehamburguesa`, `descripcionhamburguesa`, `imagenhamburguesa`, `preciohamburguesa`)
+VALUES ('777', 'bacon, queso, maíz', 1,'9.90');
+INSERT INTO `pizza`.`hamburguesas` (`nombrehamburguesa`, `descripcionhamburguesa`, `imagenhamburguesa`, `preciohamburguesa`)
+VALUES ('burguerqueso', 'ternera, queso', 2,'10.90');
+INSERT INTO `pizza`.`hamburguesas` (`nombrehamburguesa`, `descripcionhamburguesa`, `imagenhamburguesa`, `preciohamburguesa`)
+VALUES ('vegan', 'vegana, maíz', 1,'7.90');
 
 
 -- INSERTAR PRODUCTES --
 
-INSERT INTO `pizza`.`productes` (`tipusproducte`, `idtiposdepizza`, `nomproducte`, `descripcionproducte`, `imagenproducte`, `precioproducte`)
-VALUES ('pizza', 3, 'Barbacoa', 'salsabbq+queso', 1, '10.90');
-INSERT INTO `pizza`.`productes` (`tipusproducte`, `idtiposdepizza`, `nomproducte`, `descripcionproducte`, `imagenproducte`, `precioproducte`)
-VALUES ('pizza', 1, 'Carbonara', 'salsacarbonara+queso', 2, '11.95');
-INSERT INTO `pizza`.`productes` (`tipusproducte`, `idtiposdepizza`, `nomproducte`, `descripcionproducte`, `imagenproducte`, `precioproducte`)
-VALUES ('hamburguesa', 5, 'BBQ', '250grburguer+queso', 1, '8.90');
-INSERT INTO `pizza`.`productes` (`tipusproducte`, `idtiposdepizza`, `nomproducte`, `descripcionproducte`, `imagenproducte`, `precioproducte`)
-VALUES ('hamburguesa', 5, 'Burguer-Bacon-Queso', 'bacon+queso', 1, '11.90');
-INSERT INTO `pizza`.`productes` (`tipusproducte`, `idtiposdepizza`, `nomproducte`, `descripcionproducte`, `imagenproducte`, `precioproducte`)
-VALUES ('bebida', 5, 'Coca-Cola', 'tamaño regular', 1, '2.90'); 
-INSERT INTO `pizza`.`productes` (`tipusproducte`, `idtiposdepizza`, `nomproducte`, `descripcionproducte`, `imagenproducte`, `precioproducte`)
-VALUES ('bebida', 5, 'Fanta', 'tamaño-regular', 3, '2.90');
+INSERT INTO `pizza`.`productes` (`tipusproducte`, `idpizzas`)
+VALUES ('pizza', 1);
+INSERT INTO `pizza`.`productes` (`tipusproducte`, `idpizzas`)
+VALUES ('pizza', 2);
+INSERT INTO `pizza`.`productes` (`tipusproducte`, `idhamburguesas`)
+VALUES ('hamburguesa', 1);
+INSERT INTO `pizza`.`productes` (`tipusproducte`, `idhamburguesas`)
+VALUES ('hamburguesa', 2);
+INSERT INTO `pizza`.`productes` (`tipusproducte`, `idbebidas`)
+VALUES ('bebida', 1); 
+INSERT INTO `pizza`.`productes` (`tipusproducte`, `idbebidas`)
+VALUES ('bebida', 2);
+
 
 -- INSERTAR DATOS PROVINCIA --
 
@@ -160,28 +208,15 @@ VALUES (4, 'Begur', 17255);
 INSERT INTO `pizza`.`localidad` (`idprovincia`, `localidad`, `codigopostal`)
 VALUES (4, 'Cabanes', 17761);
 
--- INSERTAR CLIENTES --
-
-INSERT INTO `pizza`.`clients` (`idlocalidad`, `nom`, `cognom`, `direccioncliente`, `telefono`)
-VALUES (1, 'antonio', 'Perez', 'C/ buenavista 42', 687554433);
-
-INSERT INTO `pizza`.`clients` (`idlocalidad`, `nom`, `cognom`, `direccioncliente`, `telefono`)
-VALUES (2, 'maria', 'gimenez', 'C/ alcantara 42', 664554433);
-
-INSERT INTO `pizza`.`clients` (`idlocalidad`, `nom`, `cognom`, `direccioncliente`, `telefono`)
-VALUES (3, 'Martina', 'Ruiz', 'Av. del carmen 42', 54654433);
-
-
 
 -- INSERTAR DATOS TIENDAS --
 
-INSERT INTO `pizza`.`tiendas` (`idlocalidad`, `direcciontienda`)
-VALUES (1, 'C/ sepulveda 52');
-INSERT INTO `pizza`.`tiendas` (`idlocalidad`, `direcciontienda`)
-VALUES (3, 'C/ marina 352');
-INSERT INTO `pizza`.`tiendas` (`idlocalidad`, `direcciontienda`)
-VALUES (2, 'C/ llacuna 62');
-
+INSERT INTO `pizza`.`tiendas` (`direcciontienda`)
+VALUES ('C/ sepulveda 52');
+INSERT INTO `pizza`.`tiendas` (`direcciontienda`)
+VALUES ('C/ marina 352');
+INSERT INTO `pizza`.`tiendas` (`direcciontienda`)
+VALUES ('C/ llacuna 62');
 
 -- INSERTAR EMPLEADOS --
 
@@ -203,13 +238,23 @@ VALUES ('Maria', 'Salta', '87438486P', '48613271', 'cuiner');
 
 -- INSERTAR DATOS PEDIDOS --
 
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idempleados`,`idclient`,`idtiendas`)
-VALUES ('2020-07-01 00:00:00', 'tienda', 1, 1, 1, 1);
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`, `idempleados`,`idclient`,`idtiendas`)
-VALUES ('2020-10-10 00:00:00', 'domicilio', 3, 1, 2, 1);
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idempleados`,`idclient`,`idtiendas`)
-VALUES ('2020-09-01 00:00:00', 'domicilio', 3, 3, 3, 3);
-INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idempleados`,`idclient`,`idtiendas`)
-VALUES ('2020-06-01 00:00:00', 'tienda', 2, 3, 1, 2);
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idlocalidad`,`idempleados`,`idclient`,`idtiendas`)
+VALUES ('2020-07-01 00:00:00', 'tienda', 1, 3, 1, 1, 1);
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idlocalidad`,`idempleados`,`idclient`,`idtiendas`)
+VALUES ('2020-10-10 00:00:00', 'domicilio', 3, 3, 1, 2, 1);
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idlocalidad`,`idempleados`,`idclient`,`idtiendas`)
+VALUES ('2020-09-01 00:00:00', 'domicilio', 3, 2, 3, 3, 3);
+INSERT INTO `pizza`.`pedidos` (`fechahora`, `entrega`,`idproductes`,`idlocalidad`,`idempleados`,`idclient`,`idtiendas`)
+VALUES ('2020-06-01 00:00:00', 'tienda', 2, 1, 3, 1, 2);
+
+-- INSERTAR RESUMCOMANDES --
+INSERT INTO `pizza`.`resumcomandes` (`idpedidos`, `idproductes`)
+VALUES (1,1);
+INSERT INTO `pizza`.`resumcomandes` (`idpedidos`, `idproductes`)
+VALUES (1,2);
+INSERT INTO `pizza`.`resumcomandes` (`idpedidos`, `idproductes`)
+VALUES (2,1);
+INSERT INTO `pizza`.`resumcomandes` (`idpedidos`, `idproductes`)
+VALUES (2,2);
 
 
